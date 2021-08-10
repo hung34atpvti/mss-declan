@@ -56,4 +56,4 @@ target
 logs
 gradlew
 gradlew.bat
-gradle/wrapper/*.jar
+gradle

@@ -54,10 +54,6 @@ build
 
 target
 logs
-ML-to-do-notes.md
-data
-mycert.pem
-incubator
 gradlew
 gradlew.bat
 gradle/wrapper/*.jar

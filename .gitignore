@@ -1,7 +1,5 @@
 HELP.md
 .gradle
-!**/.gradle
-!**/gradle/wrapper/gradle-wrapper.jar
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -37,3 +35,29 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Java Files #
+*.class
+
+# Package Files #
+# *.jar, we need to checkin gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+
+# Eclipse files #
+# IntelliJ files #
+local.properties
+out
+
+# Gradle files #
+build
+
+target
+logs
+ML-to-do-notes.md
+data
+mycert.pem
+incubator
+gradlew
+gradlew.bat
+gradle

@@ -60,4 +60,4 @@ mycert.pem
 incubator
 gradlew
 gradlew.bat
-gradle
+gradle/wrapper/gradle-wrapper.jar

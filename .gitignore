@@ -35,25 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-# Java Files #
-*.class
-
-# Package Files #
-# *.jar, we need to checkin gradle/wrapper/gradle-wrapper.jar
-*.war
-*.ear
-
-# Eclipse files #
-# IntelliJ files #
-local.properties
-out
-
-# Gradle files #
-build
-
-target
-logs
-gradlew
-gradlew.bat
-gradle

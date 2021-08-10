@@ -1,10 +1,10 @@
-package com.microservice.declan.discoveryserver;
+package com.mss.declan.eureka;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DiscoveryServerApplicationTests {
+class EurekaApplicationTests {
 
     @Test
     void contextLoads() {

@@ -4,16 +4,12 @@ plugins {
     id 'java'
 }
 
-group = 'com.microservice.declan'
+group = 'com.mss.declan'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
-}
-
-jar {
-    baseName = 'discovery-server'
-    version = '0.0.1-SNAPSHOT'
 }
 
 ext {

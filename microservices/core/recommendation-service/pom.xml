@@ -8,10 +8,10 @@
         <version>2.3.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.cmcg.nmhung</groupId>
-    <artifactId>product</artifactId>
+    <groupId>com.cmcg.nnhung</groupId>
+    <artifactId>recommendation-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>product</name>
+    <name>recommendation-service</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>

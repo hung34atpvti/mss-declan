@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
-
 @Service
 public class ProcessTimeService {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessTimeService.class);
@@ -32,7 +30,7 @@ public class ProcessTimeService {
     }
 
     public int calculateProcessingTime() {
-        int processingTimeMs = minMs + (new Random().nextInt() * (maxMs - minMs));
+        int processingTimeMs = minMs + (int) (Math.random() * (maxMs - minMs));
         LOG.debug("Return calculated processing time: {} ms", processingTimeMs);
         return processingTimeMs;
     }

@@ -49,6 +49,7 @@ public class ReviewController {
             Thread.sleep(pt);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 

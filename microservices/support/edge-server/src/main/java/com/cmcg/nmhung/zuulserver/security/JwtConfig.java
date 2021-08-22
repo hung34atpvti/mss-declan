@@ -1,4 +1,4 @@
-package io.github.tubean.eureka.zuulserver.security;
+package com.cmcg.nmhung.zuulserver.security;
 
 import org.springframework.beans.factory.annotation.Value;
 

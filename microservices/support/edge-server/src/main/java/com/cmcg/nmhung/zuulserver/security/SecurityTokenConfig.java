@@ -1,6 +1,7 @@
 package com.cmcg.nmhung.zuulserver.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity 	// Enable security config. This annotation denotes config for spring security.
+@EnableConfigurationProperties(SecurityProperties.class)
 public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtConfig jwtConfig;
@@ -32,8 +34,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		   // allow all who are accessing "auth" service
 		   .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
-		   // must be an admin if trying to access admin area (authentication is also required here)
-		   .antMatchers("/gallery" + "/admin/**").hasRole("ADMIN")
+//		   // must be an admin if trying to access admin area (authentication is also required here)
+//		   .antMatchers("/gallery" + "/admin/**").hasRole("ADMIN")
 		   // Any other request must be authenticated
 		   .anyRequest().authenticated(); 
 	}

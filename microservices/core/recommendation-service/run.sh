@@ -1,5 +1,5 @@
-JOB_NAME=gateway-service
-PORT=8765
+JOB_NAME=recommendation-service
+PORT=8771
 HOST=192.168.0.9
 mvn clean install -Dmaven.test.skip=true
 echo '####################################################################### RUN WITH DOCKER #################################################################################'

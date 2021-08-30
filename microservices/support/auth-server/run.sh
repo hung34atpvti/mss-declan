@@ -13,6 +13,5 @@ docker run -d \
 -m 2.2g \
 -p $PORT:$PORT \
 -e eureka.client.service-url.defaultZone=http://${HOST}:8761/eureka/ \
--e eureka.instance.hostname=${JOB_NAME} \
+-e eureka.instance.preferIpAddress=true \
 $JOB_NAME
-docker image prune -a -f

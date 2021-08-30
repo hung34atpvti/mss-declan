@@ -1,5 +1,6 @@
 JOB_NAME=discovery-service
 PORT=8761
+HOST=192.168.0.9
 mvn clean install -Dmaven.test.skip=true
 echo '####################################################################### RUN WITH DOCKER #################################################################################'
 docker build -t $JOB_NAME .
@@ -11,5 +12,6 @@ docker run -d \
 --restart on-failure:5 \
 -m 2.2g \
 -p $PORT:$PORT \
+-e eureka.instance.preferIpAddress=true \
+-e eureka.client.service-url.defaultZone=http://${HOST}:8761/eureka/ \
 $JOB_NAME
-docker image prune -a -f

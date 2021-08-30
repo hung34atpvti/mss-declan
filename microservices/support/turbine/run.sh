@@ -1,5 +1,5 @@
-JOB_NAME=gateway-service
-PORT=8765
+JOB_NAME=turbine
+PORT=8989
 HOST=192.168.0.9
 mvn clean install -Dmaven.test.skip=true
 echo '####################################################################### RUN WITH DOCKER #################################################################################'
@@ -14,4 +14,8 @@ docker run -d \
 -p $PORT:$PORT \
 -e eureka.client.service-url.defaultZone=http://${HOST}:8761/eureka/ \
 -e eureka.instance.preferIpAddress=true \
+-e spring.rabbitmq.host=${HOST} \
+-e spring.rabbitmq.port=5672 \
+-e spring.rabbitmq.username=guest \
+-e spring.rabbitmq.password=guest \
 $JOB_NAME

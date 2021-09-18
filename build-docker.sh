@@ -10,7 +10,7 @@ docker build -t zuul-server .
 #build auth-server
 cd ../auth-server/
 mvn clean install -Dmaven.test.skip=true
-docker build -t auth-server .
+docker build -t auth-service .
 #BUILD CORE
 #build product-service
 cd ../../core/product-service/

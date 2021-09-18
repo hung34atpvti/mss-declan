@@ -45,9 +45,9 @@ services:
       - mss-declan
 
   auth-server:
-    image: auth-server
+    image: auth-service
     restart: always
-    container_name: auth-server
+    container_name: auth-service
     ports:
       - "9999:9999"
     networks:

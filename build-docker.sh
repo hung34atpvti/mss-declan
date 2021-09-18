@@ -19,7 +19,7 @@ docker build -t product-service .
 #build recommendation-service
 cd ../recommendation-service/
 mvn clean install -Dmaven.test.skip=true
-docker build -t recommendation-services .
+docker build -t recommendation-service .
 #build review-service
 cd ../review-service/
 mvn clean install -Dmaven.test.skip=true

@@ -1,0 +1,103 @@
+# Documentation
+# https://docs.docker.com/compose/compose-file
+
+version: '3.7'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    restart: always
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - mss-declan
+
+  zipkin:
+    image: openzipkin/zipkin:2.23
+    restart: always
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      - RABBIT_ADDRESSES=rabbitmq:5672
+    networks:
+      - mss-declan
+    depends_on:
+      - rabbitmq
+
+  eureka-server:
+    image: eureka-server
+    restart: always
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - mss-declan
+    depends_on:
+      - rabbitmq
+      - zipkin
+      
+  zuul-server:
+    image: zuul-server
+    restart: always
+    container_name: zuul-server
+    ports:
+      - "8765:8765"
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+
+  auth-server:
+    image: auth-service
+    restart: always
+    container_name: auth-service
+    ports:
+      - "9999:9999"
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+
+  product-service:
+    image: product-service
+    restart: always
+    container_name: product-service
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+
+  recommendation-service:
+    image: recommendation-service
+    restart: always
+    container_name: recommendation-service
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+
+  review-service:
+    image: review-service
+    restart: always
+    container_name: review-service
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+
+  product-composite-service:
+    image: product-composite-service
+    restart: always
+    container_name: product-composite-service
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+
+networks:
+  mss-declan:
+    driver: bridge

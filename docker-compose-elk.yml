@@ -1,4 +1,4 @@
-version: "3.7"
+version: "2.1"
 
 services:
 
@@ -12,6 +12,11 @@ services:
       - elk-net
     ports:
       - 9200:9200
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   kibana:
     container_name: kb-container
@@ -21,7 +26,8 @@ services:
     networks:
       - elk-net
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     ports:
       - 5601:5601
 
@@ -34,7 +40,8 @@ services:
       - $PWD/elk-config:/elk-config
     command: logstash -f /elk-config/logstash.config
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
       interval: 10s

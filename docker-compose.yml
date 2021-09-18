@@ -25,7 +25,14 @@ services:
       - RABBIT_ADDRESSES=rabbitmq:5672
     networks:
       - mss-declan
-      
+    depends_on:
+      - rabbitmq
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+
   eureka-server:
     image: eureka-server
     restart: always
@@ -34,6 +41,14 @@ services:
       - "8761:8761"
     networks:
       - mss-declan
+    depends_on:
+      - rabbitmq
+      - zipkin
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
       
   zuul-server:
     image: zuul-server
@@ -43,6 +58,13 @@ services:
       - "8765:8765"
     networks:
       - mss-declan
+    depends_on:
+      - eureka-server
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
 
   auth-server:
     image: auth-service
@@ -52,6 +74,13 @@ services:
       - "9999:9999"
     networks:
       - mss-declan
+    depends_on:
+      - eureka-server
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
 
   product-service:
     image: product-service
@@ -59,6 +88,13 @@ services:
     container_name: product-service
     networks:
       - mss-declan
+    depends_on:
+      - eureka-server
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
 
   recommendation-service:
     image: recommendation-service
@@ -66,6 +102,14 @@ services:
     container_name: recommendation-service
     networks:
       - mss-declan
+    depends_on:
+      - eureka-server
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+
 
   review-service:
     image: review-service
@@ -73,11 +117,71 @@ services:
     container_name: review-service
     networks:
       - mss-declan
+    depends_on:
+      - eureka-server
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
 
   product-composite-service:
     image: product-composite-service
     restart: always
     container_name: product-composite-service
+    networks:
+      - mss-declan
+    depends_on:
+      - eureka-server
+      - logstash
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mss-declan
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.14.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - "xpack.security.enabled=false"
+    depends_on:
+      - elasticsearch
+    networks:
+      - mss-declan
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.14.0
+    container_name: logstash
+    ports:
+      - "25826:25826"
+    volumes:
+      - $PWD/elk-config:/elk-config
+    command: logstash -f /elk-config/logstash.config
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - mss-declan
       

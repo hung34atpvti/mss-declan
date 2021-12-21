@@ -1,13 +1,13 @@
 #BUILD SUPPORT
 #build discovery server
-cd microservices/support/discovery-server/
-mvn clean install -Dmaven.test.skip=true
-docker build -t eureka-server .
+#cd microservices/support/discovery-server/
+#mvn clean install -Dmaven.test.skip=true
+#docker build -t eureka-server .
 #build gateway server
-cd ../edge-server/
+cd microservices/support/edge-server/
 mvn clean install -Dmaven.test.skip=true
 docker build -t zuul-server .
-#build auth-server
+build auth-server
 cd ../auth-server/
 mvn clean install -Dmaven.test.skip=true
 docker build -t auth-service .

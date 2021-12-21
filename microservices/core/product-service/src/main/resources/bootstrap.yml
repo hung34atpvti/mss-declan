@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: product-service
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${server.port}
+      host: consul-server-bootstrap
+      port: 8500

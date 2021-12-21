@@ -5,6 +5,23 @@ version: '3.7'
 
 services:
 
+  consul-agent: &consul-agent
+    image: consul
+    container_name: consul-agent
+    networks:
+      - mss-declan
+    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-server-bootstrap:
+    <<: *consul-agent
+    container_name: consul-server-bootstrap
+    ports:
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+      - "8600:8600/udp"
+    command: "agent -server -bootstrap-expect 1 -ui -client 0.0.0.0"
+
   rabbitmq:
     image: rabbitmq:3.9-management
     restart: always
@@ -28,18 +45,6 @@ services:
     depends_on:
       - rabbitmq
 
-  eureka-server:
-    image: eureka-server
-    restart: always
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    networks:
-      - mss-declan
-    depends_on:
-      - rabbitmq
-      - zipkin
-      
   zuul-server:
     image: zuul-server
     restart: always
@@ -49,7 +54,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - eureka-server
+      - consul-server-bootstrap
 
   auth-server:
     image: auth-service
@@ -60,7 +65,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - eureka-server
+      - consul-server-bootstrap
 
   product-service:
     image: product-service
@@ -69,7 +74,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - eureka-server
+      - consul-server-bootstrap
 
   recommendation-service:
     image: recommendation-service
@@ -78,7 +83,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - eureka-server
+      - consul-server-bootstrap
 
   review-service:
     image: review-service
@@ -87,7 +92,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - eureka-server
+      - consul-server-bootstrap
 
   product-composite-service:
     image: product-composite-service
@@ -96,7 +101,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - eureka-server
+      - consul-server-bootstrap
 
 networks:
   mss-declan:

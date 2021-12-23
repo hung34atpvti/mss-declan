@@ -103,6 +103,28 @@ services:
     depends_on:
       - consul-server-bootstrap
 
+  turbine:
+    image: turbine
+    restart: always
+    container_name: turbine
+    ports:
+      - "8989:8989"
+    networks:
+      - mss-declan
+    depends_on:
+      - consul-server-bootstrap
+
+  hystrix-dashboard:
+    image: hystrix-dashboard
+    restart: always
+    container_name: hystrix-dashboard
+    ports:
+      - "7979:7979"
+    networks:
+      - mss-declan
+    depends_on:
+      - consul-server-bootstrap
+
 networks:
   mss-declan:
     driver: bridge

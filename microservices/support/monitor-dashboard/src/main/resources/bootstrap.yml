@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: hystrix-dashboard
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${server.port}
+      host: consul-server-bootstrap
+      port: 8500
+#  cloud:
+#    config:
+#      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
+      

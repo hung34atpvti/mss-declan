@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: turbine
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${server.port}
+      host: consul-server-bootstrap
+      port: 8500
+
+applications: product-composite-service
+
+turbine:
+  aggregator:
+     clusterConfig: ${applications}
+  appConfig: ${applications}

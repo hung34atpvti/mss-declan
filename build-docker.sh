@@ -7,7 +7,15 @@
 cd microservices/support/edge-server/
 mvn clean install -Dmaven.test.skip=true
 docker build -t zuul-server .
-build auth-server
+#build turbine
+cd ../turbine/
+mvn clean install -Dmaven.test.skip=true
+docker build -t turbine .
+#build hystrix-dashboard
+cd ../monitor-dashboard/
+mvn clean install -Dmaven.test.skip=true
+docker build -t hystrix-dashboard .
+#build auth-server
 cd ../auth-server/
 mvn clean install -Dmaven.test.skip=true
 docker build -t auth-service .

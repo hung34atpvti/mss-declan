@@ -1,3 +1,10 @@
+server:
+  port: 7979
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
+
 spring:
   application:
     name: hystrix-dashboard
@@ -8,7 +15,3 @@ spring:
         instance-id: ${spring.application.name}:${server.port}
       host: consul-server-bootstrap
       port: 8500
-#  cloud:
-#    config:
-#      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
-      

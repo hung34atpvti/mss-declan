@@ -10,3 +10,9 @@ spring:
       port: 8500
     stream:
       default-binder: rabbit
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

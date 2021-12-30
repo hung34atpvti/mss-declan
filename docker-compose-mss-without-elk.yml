@@ -5,22 +5,38 @@ version: '3.7'
 
 services:
 
-  consul-agent: &consul-agent
+#  consul-agent: &consul-agent
+#    image: consul
+#    container_name: consul-agent
+#    networks:
+#      - mss-declan
+#    command: "agent -retry-join consul -client 0.0.0.0"
+#
+#  consul:
+#    <<: *consul-agent
+#    container_name: consul
+#    ports:
+#      - "8400:8400"
+#      - "8500:8500"
+#      - "8600:8600"
+#      - "8600:8600/udp"
+#    command: "agent -server -bootstrap-expect 1 -ui -client 0.0.0.0"
+
+  consul:
     image: consul
-    container_name: consul-agent
+    container_name: consul
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 8300:8300
+      - 8500:8500
+      - 8600:8600
     networks:
       - mss-declan
-    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+    command: consul agent -dev -ui -client 0.0.0.0 -log-level=INFO
 
-  consul-server-bootstrap:
-    <<: *consul-agent
-    container_name: consul-server-bootstrap
-    ports:
-      - "8400:8400"
-      - "8500:8500"
-      - "8600:8600"
-      - "8600:8600/udp"
-    command: "agent -server -bootstrap-expect 1 -ui -client 0.0.0.0"
+
+
 
   rabbitmq:
     image: rabbitmq:3.9-management
@@ -54,7 +70,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   auth-server:
     image: auth-service
@@ -65,7 +81,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   product-service:
     image: product-service
@@ -74,7 +90,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   recommendation-service:
     image: recommendation-service
@@ -83,7 +99,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   review-service:
     image: review-service
@@ -92,7 +108,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   product-composite-service:
     image: product-composite-service
@@ -101,7 +117,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   turbine:
     image: turbine
@@ -112,7 +128,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
   hystrix-dashboard:
     image: hystrix-dashboard
@@ -123,7 +139,7 @@ services:
     networks:
       - mss-declan
     depends_on:
-      - consul-server-bootstrap
+      - consul
 
 networks:
   mss-declan:

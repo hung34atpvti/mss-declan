@@ -17,7 +17,7 @@ spring:
       discovery:
         prefer-ip-address: true
         instance-id: ${spring.application.name}:${server.port}
-      host: consul-server-bootstrap
+      host: consul
       port: 8500
 
 applications: product-composite-service

@@ -5,6 +5,23 @@ version: '3.7'
 
 services:
 
+  consul:
+    image: consul
+    container_name: consul
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 8300:8300
+      - 8500:8500
+      - 8600:8600
+    networks:
+      - mss-declan
+    command: consul agent -dev -ui -client 0.0.0.0 -log-level=INFO
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+
   rabbitmq:
     image: rabbitmq:3.9-management
     restart: always
@@ -13,7 +30,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
 
   zipkin:
     image: openzipkin/zipkin:2.23
@@ -24,25 +41,9 @@ services:
     environment:
       - RABBIT_ADDRESSES=rabbitmq:5672
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
       - rabbitmq
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://127.0.0.1:25826"
-
-  eureka-server:
-    image: eureka-server
-    restart: always
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    networks:
-      - zipkin-rabitmq_default
-    depends_on:
-      - rabbitmq
-      - zipkin
     logging:
       driver: syslog
       options:
@@ -55,9 +56,9 @@ services:
     ports:
       - "8765:8765"
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
-      - eureka-server
+      - consul
     logging:
       driver: syslog
       options:
@@ -70,9 +71,9 @@ services:
     ports:
       - "9999:9999"
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
-      - eureka-server
+      - consul
     logging:
       driver: syslog
       options:
@@ -83,9 +84,9 @@ services:
     restart: always
     container_name: product-service
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
-      - eureka-server
+      - consul
     logging:
       driver: syslog
       options:
@@ -96,23 +97,22 @@ services:
     restart: always
     container_name: recommendation-service
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
-      - eureka-server
+      - consul
     logging:
       driver: syslog
       options:
         syslog-address: "tcp://127.0.0.1:25826"
-
 
   review-service:
     image: review-service
     restart: always
     container_name: review-service
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
-      - eureka-server
+      - consul
     logging:
       driver: syslog
       options:
@@ -123,14 +123,14 @@ services:
     restart: always
     container_name: product-composite-service
     networks:
-      - zipkin-rabitmq_default
+      - mss-declan
     depends_on:
-      - eureka-server
+      - consul
     logging:
       driver: syslog
       options:
         syslog-address: "tcp://127.0.0.1:25826"
 
 networks:
-  zipkin-rabitmq_default:
+  mss-declan:
     driver: bridge

@@ -35,9 +35,6 @@ services:
       - mss-declan
     command: consul agent -dev -ui -client 0.0.0.0 -log-level=INFO
 
-
-
-
   rabbitmq:
     image: rabbitmq:3.9-management
     restart: always
@@ -114,28 +111,6 @@ services:
     image: product-composite-service
     restart: always
     container_name: product-composite-service
-    networks:
-      - mss-declan
-    depends_on:
-      - consul
-
-  turbine:
-    image: turbine
-    restart: always
-    container_name: turbine
-    ports:
-      - "8989:8989"
-    networks:
-      - mss-declan
-    depends_on:
-      - consul
-
-  hystrix-dashboard:
-    image: hystrix-dashboard
-    restart: always
-    container_name: hystrix-dashboard
-    ports:
-      - "7979:7979"
     networks:
       - mss-declan
     depends_on:
